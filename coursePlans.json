@@ -32,7 +32,7 @@
                 "id": "group2_latex",
                 "name": "LaTeX 101",
                 "topics": "LaTeX",
-                "allowRecycle": true,
+                "allowRecycle": false,
                 "learningObjectives": {
                     "document_structure": 0.85,
                     "greek_letters": 0.85,
