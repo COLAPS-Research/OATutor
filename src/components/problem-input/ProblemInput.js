@@ -13,6 +13,9 @@ import { EQUATION_EDITOR_AUTO_COMMANDS, EQUATION_EDITOR_AUTO_OPERATORS, ThemeCon
 import { stagingProp } from "../../util/addStagingProperty";
 import { parseMatrixTex } from "../../util/parseMatrixTex";
 
+import 'katex/dist/katex.min.css';
+import Latex from 'react-latex-next';
+
 class ProblemInput extends React.Component {
     static contextType = ThemeContext;
 
@@ -141,10 +144,13 @@ class ProblemInput extends React.Component {
         }
 
         return (
-            <Grid container spacing={0} justifyContent="center" alignItems="center"
+            <Grid 
+                container
+                spacing={0} 
+                justifyContent={problemType === "TextBox" && this.props.step.answerType === "string" ? "center" : "center"}
+                alignItems="center"
                 className={clsx(disableInput && 'disable-interactions')}>
-                <Grid item xs={1} md={problemType === "TextBox" ? 4 : false}/>
-                <Grid item xs={9} md={problemType === "TextBox" ? 3 : 12}>
+                <Grid item xs={9} md={problemType === "TextBox" ? 9 : 12}>
                     {(problemType === "TextBox" && this.props.step.answerType !== "string") && (
                         <math-field
                             ref={this.mathFieldRef}
@@ -245,12 +251,15 @@ class ProblemInput extends React.Component {
                         />
                     )}
                 </Grid>
-                <Grid item xs={2} md={1}>
-                    <div style={{ marginLeft: "20%" }}>
-                        {units && renderText(units, this.context.problemID, variabilization, this.context)}
-                    </div>
-                </Grid>
-                <Grid item xs={false} md={problemType === "TextBox" ? 3 : false}/>
+                {(problemType === "TextBox" && this.props.step.answerType !== "string") && (
+                    <Grid>
+                        <Latex>
+                            hi
+                        </Latex>
+                    </Grid>
+                )
+                }
+                
             </Grid>
         )
     }

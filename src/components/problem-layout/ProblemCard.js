@@ -1,5 +1,9 @@
 import React from "react";
 
+import 'katex/dist/katex.min.css';
+import Latex from 'react-latex-next'; 
+import Divider from '@material-ui/core/Divider'
+
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
@@ -617,10 +621,20 @@ class ProblemCard extends React.Component {
 
         const problemAttempted = isCorrect != null;
 
+        let LatexRendere;
+        if (this.state.inputVal && this.step.answerType == "string") {
+            LatexRendere = <Grid item size={2}>
+                               <Latex>
+                                    {this.state.inputVal}
+                                </Latex>
+                            </Grid>
+        }
+
         return (
             <Card className={classes.card}>
                 <CardContent>
                     <h2 className={classes.stepHeader}>
+                        <Latex>
                         {renderText(
                             this.step.stepTitle,
                             problemID,
@@ -634,7 +648,8 @@ class ProblemCard extends React.Component {
                             ),
                             this.context
                         )}
-                        <hr />
+                        </Latex>
+                       <hr />
                     </h2>
 
                     <div className={classes.stepBody}>
@@ -691,32 +706,42 @@ class ProblemCard extends React.Component {
                         )}
 
                     <div className={classes.root}>
-                        <ProblemInput
-                            variabilization={chooseVariables(
-                                Object.assign(
-                                    {},
-                                    this.props.problemVars,
-                                    this.step.variabilization
-                                ),
-                                this.props.seed
-                            )}
-                            allowRetry={this.allowRetry}
-                            giveStuFeedback={this.giveStuFeedback}
-                            showCorrectness={this.showCorrectness}
-                            classes={classes}
-                            state={this.state}
-                            step={this.step}
-                            seed={this.props.seed}
-                            keepMCOrder={this.props.keepMCOrder}
-                            keyboardType={this.props.keyboardType}
-                            _setState={(state) => this.setState(state)}
-                            context={this.context}
-                            editInput={this.editInput}
-                            setInputValState={this.setInputValState}
-                            handleKey={this.handleKey}
-                            index={this.props.index}
-                        />
-                    </div>
+                        <Grid
+                            container
+                            spacing={1}
+                            justifyContent="center"
+                            alignItems="center"
+                        >
+                            <Grid item size={9}>
+                                <ProblemInput
+                                    variabilization={chooseVariables(
+                                        Object.assign(
+                                            {},
+                                            this.props.problemVars,
+                                            this.step.variabilization
+                                        ),
+                                        this.props.seed
+                                    )}
+                                    allowRetry={this.allowRetry}
+                                    giveStuFeedback={this.giveStuFeedback}
+                                    showCorrectness={this.showCorrectness}
+                                    classes={classes}
+                                    state={this.state}
+                                    step={this.step}
+                                    seed={this.props.seed}
+                                    keepMCOrder={this.props.keepMCOrder}
+                                    keyboardType={this.props.keyboardType}
+                                    _setState={(state) => this.setState(state)}
+                                    context={this.context}
+                                    editInput={this.editInput}
+                                    setInputValState={this.setInputValState}
+                                    handleKey={this.handleKey}
+                                    index={this.props.index}
+                                />
+                                </Grid>
+                                {LatexRendere}
+                        </Grid>
+                   </div>
                 </CardContent>
                 <CardActions>
                     <Grid
