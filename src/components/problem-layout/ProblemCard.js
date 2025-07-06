@@ -622,7 +622,8 @@ class ProblemCard extends React.Component {
         const problemAttempted = isCorrect != null;
 
         let LatexRendere;
-        if (this.state.inputVal && this.step.answerType == "string") {
+        let { problemType, stepAnswer, hintAnswer, units } = this.props.step;
+        if (this.state.inputVal && this.step.answerType == "string" && problemType == "TextBox") {
             LatexRendere = <Grid item size={2}>
                                <Latex>
                                     {this.state.inputVal}
