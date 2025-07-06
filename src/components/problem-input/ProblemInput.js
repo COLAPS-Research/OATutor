@@ -251,15 +251,6 @@ class ProblemInput extends React.Component {
                         />
                     )}
                 </Grid>
-                {(problemType === "TextBox" && this.props.step.answerType !== "string") && (
-                    <Grid>
-                        <Latex>
-                            hi
-                        </Latex>
-                    </Grid>
-                )
-                }
-                
             </Grid>
         )
     }
