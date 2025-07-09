@@ -16,6 +16,9 @@ import {
     toastNotifyEmpty
 } from "./ToastNotifyCorrectness";
 
+import 'katex/dist/katex.min.css';
+import Latex from 'react-latex-next'; 
+
 class HintTextbox extends React.Component {
     static contextType = ThemeContext;
 
@@ -86,25 +89,38 @@ class HintTextbox extends React.Component {
         const hintIndex = `${hintNum}-${index}`
         const problemAttempted = isCorrect != null
 
+        let LatexRendere;
+        if (this.props.hint.problemType == "TextBox") {
+            LatexRendere = <Grid item size={2}>
+                               <Latex>
+                                    {this.state.inputVal}
+                                </Latex>
+                            </Grid>
+        }
+
         return (
             <div>
-                <ProblemInput
-                    variabilization={chooseVariables(this.props.hintVars, this.props.seed)}
-                    allowRetry={this.allowRetry}
-                    giveStuFeedback={this.giveStuFeedback}
-                    showCorrectness={this.showCorrectness}
-                    classes={classes}
-                    state={this.state}
-                    step={this.hint}
-                    seed={this.props.seed}
-                    _setState={(state) => this.setState(state)}
-                    context={this.context}
-                    editInput={this.editInput}
-                    setInputValState={this.setInputValState}
-                    handleKey={this.handleKey}
-                    index={hintIndex}
-                />
-
+                <Grid container spacing={1} justifyContent='center' alignItems='center'>
+                    <Grid item>
+                        <ProblemInput
+                            variabilization={chooseVariables(this.props.hintVars, this.props.seed)}
+                            allowRetry={this.allowRetry}
+                            giveStuFeedback={this.giveStuFeedback}
+                            showCorrectness={this.showCorrectness}
+                            classes={classes}
+                            state={this.state}
+                            step={this.hint}
+                            seed={this.props.seed}
+                            _setState={(state) => this.setState(state)}
+                            context={this.context}
+                            editInput={this.editInput}
+                            setInputValState={this.setInputValState}
+                            handleKey={this.handleKey}
+                            index={hintIndex}
+                        />
+                    </Grid>
+                   {LatexRendere}
+                </Grid>
                 <Grid container spacing={0} justifyContent="center" alignItems="center">
                     <Grid item xs={false} sm={false} md={4}/>
                     <Grid item xs={4} sm={4} md={1}>

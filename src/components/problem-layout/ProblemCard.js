@@ -1,9 +1,5 @@
 import React from "react";
 
-import 'katex/dist/katex.min.css';
-import Latex from 'react-latex-next'; 
-import Divider from '@material-ui/core/Divider'
-
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
@@ -39,6 +35,9 @@ import {
 import { joinList } from "../../util/formListString";
 import withTranslation from "../../util/withTranslation.js"
 import CryptoJS from "crypto-js";
+
+import 'katex/dist/katex.min.css';
+import Latex from 'react-latex-next'; 
 
 class ProblemCard extends React.Component {
     static contextType = ThemeContext;
