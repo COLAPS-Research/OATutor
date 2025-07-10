@@ -151,8 +151,8 @@ class ProblemCard extends React.Component {
             lastAIHintHash: null,
         };
 
-         // This is used for AI hint generation
-         if (this.giveDynamicHint) {
+          // This is used for AI hint generation
+          if (this.giveDynamicHint) {
             const gptHint = {
                 id: this.step.id + "-h0",  // Unique ID for the GPT hint
                 title: "ChatGPT AI Hint",  // Translated title
@@ -494,7 +494,7 @@ class ProblemCard extends React.Component {
         }
     
         /** When we receive an error in the hint generation process,
-         *  revert back to manual hints.
+         * revert back to manual hints.
          */
         const onError = (error) => {
             this.setState({
@@ -516,8 +516,8 @@ class ProblemCard extends React.Component {
                                 this._findHintId(hint.subHints, dependency)
                         );
                     }
+                    }
                 }
-            }
 
                 // Bottom out hints option
             if (
@@ -563,7 +563,7 @@ class ProblemCard extends React.Component {
                 dynamicHint: "Failed to generate AI hint. Displaying manual hints.",
                 hintsFinished: new Array(this.hints.length).fill(0),
             });
-        };            
+        };         
     
         // Call ChatGPT to fetch the dynamic hint using streaming
         fetchDynamicHint(
@@ -599,7 +599,7 @@ class ProblemCard extends React.Component {
                 Object.assign(
                     {},
                     this.props.problemVars,
-                    this.props.variabilization
+                    this.step.variabilization
                 ),
                 this.props.seed
             ),
@@ -623,7 +623,8 @@ class ProblemCard extends React.Component {
         let LatexRendere;
         let { problemType, stepAnswer, hintAnswer, units } = this.props.step;
         if (this.state.inputVal && this.step.answerType == "string" && problemType == "TextBox") {
-            LatexRendere = <Grid item size={2}>
+            // --- ADDED CLASSNAME HERE TO HIDE THIS SPECIFIC RENDERER ---
+            LatexRendere = <Grid item size={2} className="latex-preview-output">
                                <Latex>
                                     {this.state.inputVal}
                                 </Latex>
@@ -649,7 +650,7 @@ class ProblemCard extends React.Component {
                             this.context
                         )}
                         </Latex>
-                       <hr />
+                        <hr />
                     </h2>
 
                     <div className={classes.stepBody}>
@@ -717,10 +718,10 @@ class ProblemCard extends React.Component {
                                     variabilization={chooseVariables(
                                         Object.assign(
                                             {},
-                                            this.props.problemVars,
+                                            problemVars,
                                             this.step.variabilization
                                         ),
-                                        this.props.seed
+                                        seed
                                     )}
                                     allowRetry={this.allowRetry}
                                     giveStuFeedback={this.giveStuFeedback}
@@ -738,10 +739,11 @@ class ProblemCard extends React.Component {
                                     handleKey={this.handleKey}
                                     index={this.props.index}
                                 />
-                                </Grid>
-                                {LatexRendere}
+                            </Grid>
+                            {/* --- THIS LINE IS NOW TARGETED FOR HIDING --- */}
+                            {LatexRendere}
                         </Grid>
-                   </div>
+                    </div>
                 </CardContent>
                 <CardActions>
                     <Grid
@@ -809,28 +811,28 @@ class ProblemCard extends React.Component {
                             >
                                 {(!this.showCorrectness ||
                                     !this.allowRetry) && (
-                                    <img
-                                        className={classes.checkImage}
-                                        style={{
-                                            opacity:
-                                                this.state.isCorrect == null
-                                                    ? 0
-                                                    : 1,
-                                            width: "45%",
-                                        }}
-                                        alt="Exclamation Mark Icon"
-                                        title={`The instructor has elected to ${joinList(
-                                            !this.showCorrectness &&
-                                                "hide correctness",
-                                            !this.allowRetry &&
-                                                "disallow retries"
-                                        )}`}
-                                        {...stagingProp({
-                                            "data-selenium-target": `step-correct-img-${this.props.index}`,
-                                        })}
-                                        src={`${process.env.PUBLIC_URL}/static/images/icons/exclamation.svg`}
-                                    />
-                                )}
+                                        <img
+                                            className={classes.checkImage}
+                                            style={{
+                                                opacity:
+                                                    this.state.isCorrect == null
+                                                        ? 0
+                                                        : 1,
+                                                width: "45%",
+                                            }}
+                                            alt="Exclamation Mark Icon"
+                                            title={`The instructor has elected to ${joinList(
+                                                !this.showCorrectness &&
+                                                    "hide correctness",
+                                                !this.allowRetry &&
+                                                    "disallow retries"
+                                            )}`}
+                                            {...stagingProp({
+                                                "data-selenium-target": `step-correct-img-${this.props.index}`,
+                                            })}
+                                            src={`${process.env.PUBLIC_URL}/static/images/icons/exclamation.svg`}
+                                        />
+                                    )}
                                 {this.state.isCorrect &&
                                     this.showCorrectness &&
                                     this.allowRetry && (
@@ -855,8 +857,8 @@ class ProblemCard extends React.Component {
                                             className={classes.checkImage}
                                             style={{
                                                 opacity:
-                                                    100 -
-                                                    this.state.checkMarkOpacity,
+                                                100 -
+                                                this.state.checkMarkOpacity,
                                                 width: "45%",
                                             }}
                                             alt="Red X Icon"
