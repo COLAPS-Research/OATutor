@@ -600,7 +600,7 @@ class ProblemCard extends React.Component {
                 Object.assign(
                     {},
                     this.props.problemVars,
-                    this.step.variabilization
+                    this.props.variabilization
                 ),
                 this.props.seed
             ),
@@ -625,15 +625,25 @@ class ProblemCard extends React.Component {
         if (this.state.inputVal && this.step.answerType == "string" && problemType == "TextBox") {
             // --- ADDED CLASSNAME HERE TO HIDE THIS SPECIFIC RENDERER ---
             LatexRendere = <Grid item size={2} className="latex-preview-output">
-                    <Card style={{ borderColor: 'gray', borderWidth: 1, borderStyle: 'solid' }}>
-                        <CardContent>
-                            <Typography variant="h6" style={{ marginBottom: 10 }}>
-                            LaTeX Preview
-                            </Typography>
-                            <Latex>{this.state.inputVal}</Latex>
-                        </CardContent>
-                        </Card>
-                    </Grid>
+                <Card
+                variant="outlined"
+                style={{
+                    borderColor: '#ccc',
+                    borderWidth: 1,
+                    borderRadius: 4,
+                    padding: 0,
+                }}
+                >
+                <CardContent style={{ padding: 8, borderBottom: '1px solid #ccc' }}>
+                    <Typography variant="body1" style={{ fontSize: 16, fontWeight: 400 }}>
+                    LaTeX Preview
+                    </Typography>
+                </CardContent>
+                <CardContent style={{ padding: 8 }}>
+                    <Latex>{this.state.inputVal}</Latex>
+                </CardContent>
+                </Card>
+            </Grid>
         }
 
         return (
@@ -723,10 +733,10 @@ class ProblemCard extends React.Component {
                                     variabilization={chooseVariables(
                                         Object.assign(
                                             {},
-                                            problemVars,
+                                            this.props.problemVars,
                                             this.step.variabilization
                                         ),
-                                        seed
+                                        this.props.seed
                                     )}
                                     allowRetry={this.allowRetry}
                                     giveStuFeedback={this.giveStuFeedback}
