@@ -141,10 +141,14 @@ class ProblemInput extends React.Component {
         }
 
         return (
-            <Grid container spacing={0} justifyContent="center" alignItems="center"
+            <Grid
+                container
+                spacing={0}
+                justifyContent="center"
+                alignItems="center"
                 className={clsx(disableInput && 'disable-interactions')}>
-                <Grid item xs={1} md={problemType === "TextBox" ? 4 : false}/>
-                <Grid item xs={9} md={problemType === "TextBox" ? 3 : 12}>
+                {/* --- MODIFIED GRID ITEM: xs and md set to 12 for full width --- */}
+                <Grid item xs={12} md={12}>
                     {(problemType === "TextBox" && this.props.step.answerType !== "string") && (
                         <math-field
                             ref={this.mathFieldRef}
@@ -158,15 +162,15 @@ class ProblemInput extends React.Component {
                             autoCommands={EQUATION_EDITOR_AUTO_COMMANDS}
                             autoOperatorNames={EQUATION_EDITOR_AUTO_OPERATORS}
                         >
-                            </math-field>
+                        </math-field>
+                    )}
 
-                    )}               
-                    {(problemType === "TextBox" && this.props.step.answerType === "string") && (
+                       {(problemType === "TextBox" && this.props.step.answerType === "string") && (
                         <TextField
                             ref={this.textFieldRef}
                             inputProps={{
                                 min: 0,
-                                style: { textAlign: 'center' },
+                                style: { textAlign: 'left' }, // Keep text aligned to the left
                                 "aria-label": "Enter a response to the question above"
                             }}
                             {...stagingProp({
@@ -185,6 +189,11 @@ class ProblemInput extends React.Component {
                             {...(use_expanded_view && debug) ? {
                                 defaultValue: correctAnswer
                             } : {}}
+
+                            multiline
+                            rows={2}
+                            rowsMax={15}
+                            fullWidth
                         >
                         </TextField>
                     )}
@@ -196,7 +205,7 @@ class ProblemInput extends React.Component {
                         >
                         </textarea>
                     )}
-                                        {(problemType === "MultipleChoice" && keepMCOrder) ? (
+                    {(problemType === "MultipleChoice" && keepMCOrder) ? (
                         <MultipleChoice
                             onChange={(evt) => this.props.editInput(evt)}
                             choices={[...this.props.step.choices].reverse()}
@@ -245,12 +254,6 @@ class ProblemInput extends React.Component {
                         />
                     )}
                 </Grid>
-                <Grid item xs={2} md={1}>
-                    <div style={{ marginLeft: "20%" }}>
-                        {units && renderText(units, this.context.problemID, variabilization, this.context)}
-                    </div>
-                </Grid>
-                <Grid item xs={false} md={problemType === "TextBox" ? 3 : false}/>
             </Grid>
         )
     }

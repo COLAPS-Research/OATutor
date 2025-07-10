@@ -30,7 +30,7 @@
 .image-grayed-out {
     border-radius: 50%;
     padding: 0.28rem;
-    background-color: rgba(0, 0, 0, 0.1); /* Change the opacity as desired */
+    background-color: rgba(22, 0, 0, 0.1);
     z-index: 1;
     opacity: 1;
 }

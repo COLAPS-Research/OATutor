@@ -36,6 +36,10 @@ import { joinList } from "../../util/formListString";
 import withTranslation from "../../util/withTranslation.js"
 import CryptoJS from "crypto-js";
 
+import 'katex/dist/katex.min.css';
+import Latex from 'react-latex-next'; 
+import { Typography } from "@material-ui/core"; 
+
 class ProblemCard extends React.Component {
     static contextType = ThemeContext;
 
@@ -148,8 +152,8 @@ class ProblemCard extends React.Component {
             lastAIHintHash: null,
         };
 
-         // This is used for AI hint generation
-         if (this.giveDynamicHint) {
+          // This is used for AI hint generation
+          if (this.giveDynamicHint) {
             const gptHint = {
                 id: this.step.id + "-h0",  // Unique ID for the GPT hint
                 title: "ChatGPT AI Hint",  // Translated title
@@ -491,7 +495,7 @@ class ProblemCard extends React.Component {
         }
     
         /** When we receive an error in the hint generation process,
-         *  revert back to manual hints.
+         * revert back to manual hints.
          */
         const onError = (error) => {
             this.setState({
@@ -513,8 +517,8 @@ class ProblemCard extends React.Component {
                                 this._findHintId(hint.subHints, dependency)
                         );
                     }
+                    }
                 }
-            }
 
                 // Bottom out hints option
             if (
@@ -560,7 +564,7 @@ class ProblemCard extends React.Component {
                 dynamicHint: "Failed to generate AI hint. Displaying manual hints.",
                 hintsFinished: new Array(this.hints.length).fill(0),
             });
-        };            
+        };         
     
         // Call ChatGPT to fetch the dynamic hint using streaming
         fetchDynamicHint(
@@ -607,7 +611,6 @@ class ProblemCard extends React.Component {
             this.state.bioInfo
         );
     };
-        
 
     render() {
         const { translate } = this.props;
@@ -617,10 +620,37 @@ class ProblemCard extends React.Component {
 
         const problemAttempted = isCorrect != null;
 
+        let LatexRendere;
+        let { problemType, stepAnswer, hintAnswer, units } = this.props.step;
+        if (this.state.inputVal && this.step.answerType == "string" && problemType == "TextBox") {
+            // --- ADDED CLASSNAME HERE TO HIDE THIS SPECIFIC RENDERER ---
+            LatexRendere = <Grid item size={2} className="latex-preview-output">
+                <Card
+                variant="outlined"
+                style={{
+                    borderColor: '#ccc',
+                    borderWidth: 1,
+                    borderRadius: 4,
+                    padding: 0,
+                }}
+                >
+                <CardContent style={{ padding: 8, borderBottom: '1px solid #ccc' }}>
+                    <Typography variant="body1" style={{ fontSize: 16, fontWeight: 400 }}>
+                    LaTeX Preview
+                    </Typography>
+                </CardContent>
+                <CardContent style={{ padding: 8 }}>
+                    <Latex>{this.state.inputVal}</Latex>
+                </CardContent>
+                </Card>
+            </Grid>
+        }
+
         return (
             <Card className={classes.card}>
                 <CardContent>
                     <h2 className={classes.stepHeader}>
+                        <Latex>
                         {renderText(
                             this.step.stepTitle,
                             problemID,
@@ -634,6 +664,7 @@ class ProblemCard extends React.Component {
                             ),
                             this.context
                         )}
+                        </Latex>
                         <hr />
                     </h2>
 
@@ -691,31 +722,42 @@ class ProblemCard extends React.Component {
                         )}
 
                     <div className={classes.root}>
-                        <ProblemInput
-                            variabilization={chooseVariables(
-                                Object.assign(
-                                    {},
-                                    this.props.problemVars,
-                                    this.step.variabilization
-                                ),
-                                this.props.seed
-                            )}
-                            allowRetry={this.allowRetry}
-                            giveStuFeedback={this.giveStuFeedback}
-                            showCorrectness={this.showCorrectness}
-                            classes={classes}
-                            state={this.state}
-                            step={this.step}
-                            seed={this.props.seed}
-                            keepMCOrder={this.props.keepMCOrder}
-                            keyboardType={this.props.keyboardType}
-                            _setState={(state) => this.setState(state)}
-                            context={this.context}
-                            editInput={this.editInput}
-                            setInputValState={this.setInputValState}
-                            handleKey={this.handleKey}
-                            index={this.props.index}
-                        />
+                        <Grid
+                            container
+                            spacing={1}
+                            justifyContent="center"
+                            alignItems="center"
+                        >
+                            <Grid item size={9}>
+                                <ProblemInput
+                                    variabilization={chooseVariables(
+                                        Object.assign(
+                                            {},
+                                            this.props.problemVars,
+                                            this.step.variabilization
+                                        ),
+                                        this.props.seed
+                                    )}
+                                    allowRetry={this.allowRetry}
+                                    giveStuFeedback={this.giveStuFeedback}
+                                    showCorrectness={this.showCorrectness}
+                                    classes={classes}
+                                    state={this.state}
+                                    step={this.step}
+                                    seed={this.props.seed}
+                                    keepMCOrder={this.props.keepMCOrder}
+                                    keyboardType={this.props.keyboardType}
+                                    _setState={(state) => this.setState(state)}
+                                    context={this.context}
+                                    editInput={this.editInput}
+                                    setInputValState={this.setInputValState}
+                                    handleKey={this.handleKey}
+                                    index={this.props.index}
+                                />
+                            </Grid>
+                            {/* --- THIS LINE IS NOW TARGETED FOR HIDING --- */}
+                            {LatexRendere}
+                        </Grid>
                     </div>
                 </CardContent>
                 <CardActions>
@@ -784,28 +826,28 @@ class ProblemCard extends React.Component {
                             >
                                 {(!this.showCorrectness ||
                                     !this.allowRetry) && (
-                                    <img
-                                        className={classes.checkImage}
-                                        style={{
-                                            opacity:
-                                                this.state.isCorrect == null
-                                                    ? 0
-                                                    : 1,
-                                            width: "45%",
-                                        }}
-                                        alt="Exclamation Mark Icon"
-                                        title={`The instructor has elected to ${joinList(
-                                            !this.showCorrectness &&
-                                                "hide correctness",
-                                            !this.allowRetry &&
-                                                "disallow retries"
-                                        )}`}
-                                        {...stagingProp({
-                                            "data-selenium-target": `step-correct-img-${this.props.index}`,
-                                        })}
-                                        src={`${process.env.PUBLIC_URL}/static/images/icons/exclamation.svg`}
-                                    />
-                                )}
+                                        <img
+                                            className={classes.checkImage}
+                                            style={{
+                                                opacity:
+                                                    this.state.isCorrect == null
+                                                        ? 0
+                                                        : 1,
+                                                width: "45%",
+                                            }}
+                                            alt="Exclamation Mark Icon"
+                                            title={`The instructor has elected to ${joinList(
+                                                !this.showCorrectness &&
+                                                    "hide correctness",
+                                                !this.allowRetry &&
+                                                    "disallow retries"
+                                            )}`}
+                                            {...stagingProp({
+                                                "data-selenium-target": `step-correct-img-${this.props.index}`,
+                                            })}
+                                            src={`${process.env.PUBLIC_URL}/static/images/icons/exclamation.svg`}
+                                        />
+                                    )}
                                 {this.state.isCorrect &&
                                     this.showCorrectness &&
                                     this.allowRetry && (
@@ -830,8 +872,8 @@ class ProblemCard extends React.Component {
                                             className={classes.checkImage}
                                             style={{
                                                 opacity:
-                                                    100 -
-                                                    this.state.checkMarkOpacity,
+                                                100 -
+                                                this.state.checkMarkOpacity,
                                                 width: "45%",
                                             }}
                                             alt="Red X Icon"
