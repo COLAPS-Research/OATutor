@@ -38,7 +38,3 @@
 .image {
     z-index: 0;
 }
-
-.latex-preview-output {
-    display: none !important; /* just wanted to hide the duplicate text preview beside the TextBox*/
-}

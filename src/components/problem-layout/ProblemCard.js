@@ -38,6 +38,7 @@ import CryptoJS from "crypto-js";
 
 import 'katex/dist/katex.min.css';
 import Latex from 'react-latex-next'; 
+import { Typography } from "@material-ui/core"; 
 
 class ProblemCard extends React.Component {
     static contextType = ThemeContext;
@@ -610,7 +611,6 @@ class ProblemCard extends React.Component {
             this.state.bioInfo
         );
     };
-        
 
     render() {
         const { translate } = this.props;
@@ -625,10 +625,15 @@ class ProblemCard extends React.Component {
         if (this.state.inputVal && this.step.answerType == "string" && problemType == "TextBox") {
             // --- ADDED CLASSNAME HERE TO HIDE THIS SPECIFIC RENDERER ---
             LatexRendere = <Grid item size={2} className="latex-preview-output">
-                               <Latex>
-                                    {this.state.inputVal}
-                                </Latex>
-                            </Grid>
+                    <Card style={{ borderColor: 'gray', borderWidth: 1, borderStyle: 'solid' }}>
+                        <CardContent>
+                            <Typography variant="h6" style={{ marginBottom: 10 }}>
+                            LaTeX Preview
+                            </Typography>
+                            <Latex>{this.state.inputVal}</Latex>
+                        </CardContent>
+                        </Card>
+                    </Grid>
         }
 
         return (

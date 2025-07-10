@@ -13,9 +13,6 @@ import { EQUATION_EDITOR_AUTO_COMMANDS, EQUATION_EDITOR_AUTO_OPERATORS, ThemeCon
 import { stagingProp } from "../../util/addStagingProperty";
 import { parseMatrixTex } from "../../util/parseMatrixTex";
 
-import 'katex/dist/katex.min.css';
-import Latex from 'react-latex-next';
-
 class ProblemInput extends React.Component {
     static contextType = ThemeContext;
 
