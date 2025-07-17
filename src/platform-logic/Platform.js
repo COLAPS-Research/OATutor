@@ -53,9 +53,11 @@ class Platform extends React.Component {
                 stepIndex++
             ) {
                 const step = problem.steps[stepIndex];
-                step.knowledgeComponents = cleanArray(
-                    context.skillModel[step.id] || []
-                );
+                const skills = context.skillModel[step.id];
+                if (skills === undefined) {
+                    console.warn(`Step ${step.id} does not have an entry in skillModel.json defined.`);
+                }
+                step.knowledgeComponents = cleanArray(skills || []);
             }
         }
         if (this.props.lessonID == null) {
