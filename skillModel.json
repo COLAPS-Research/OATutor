@@ -1,0 +1,70 @@
+{
+    "zzzzhistory01a": [
+        "historical_context",
+        "research_significance"
+    ],
+    "zzzzhistory02a": [
+        "historical_context",
+        "research_significance"
+    ],
+    "zzzzhistory03a": [
+        "historical_context",
+        "research_significance"
+    ],
+    "zzzzz_git001a": [
+        "basic_git_concepts"
+    ],
+    "zzzzz_git001b": [
+        "basic_git_concepts"
+    ],
+    "zzzzz_git001c": [
+        "basic_git_concepts",
+        "basic_git_operations"
+    ],
+    "zzzzz_git002a": [
+        "basic_git_operations"
+    ],
+    "zzzzz_git002b": [
+        "basic_git_operations"
+    ],
+    "zzzzz_git002c": [
+        "basic_git_operations"
+    ],
+    "zzzzz_git002d": [
+        "basic_git_operations"
+    ],
+
+    "latex001a": [
+        "text_editor_knowledge"
+    ],
+    "latex002a": [
+        "document_structure"
+    ],
+    "latex003a": [
+        "formulars",
+        "greek_letters"
+    ],
+    "latex004a": [
+        "packages"
+    ],
+    "latex005a": [
+        "keywords"
+    ],
+    "latex006a": [
+        "formulars",
+        "greek_letters"
+    ],
+     "latex007a": [
+        "keywords",
+        "document_structure"
+    ],
+     "latex008a": [
+        "text_editor_knowledge"
+    ],
+     "latex009a": [
+        "formulars"
+    ],
+     "latex010a": [
+        "formulars"
+    ]
+}

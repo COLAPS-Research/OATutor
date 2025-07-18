@@ -43,3 +43,17 @@ math-field::part(menu-toggle) {
     overflow: auto;
     background-color: #f5f5f5;
 }
+
+
+.MuiInputBase-root.MuiOutlinedInput-root .MuiInputBase-input.MuiInputBase-inputMultiline {
+    min-height: auto !important;
+    font-size: 1.15rem !important;
+    padding: 12px !important;
+    box-sizing: border-box;
+    overflow-y: auto;
+}
+
+.MuiFormControl-root.MuiTextField-root {
+    width: 100% !important;
+    max-width: none !important;
+}

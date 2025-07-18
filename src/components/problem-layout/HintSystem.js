@@ -18,6 +18,9 @@ import ErrorBoundary from "../ErrorBoundary";
 import withTranslation from '../../util/withTranslation';
 import ReloadIcon from './ReloadIcon';
 
+import 'katex/dist/katex.min.css';
+import Latex from 'react-latex-next'; 
+
 class HintSystem extends React.Component {
     static contextType = ThemeContext;
 
@@ -153,6 +156,8 @@ class HintSystem extends React.Component {
         const { currentExpanded, showSubHints } = this.state;
         const { debug, use_expanded_view } = this.context;
 
+        console.log(this.props)
+
         return (
             <div className={classes.root}>
                 {/* {this.giveDynamicHint && <div>hi</div>} */}
@@ -173,137 +178,159 @@ class HintSystem extends React.Component {
                         }
                         defaultExpanded={false}
                     >
-                        <AccordionSummary
-                            expandIcon={<ExpandMoreIcon />}
-                            aria-controls="panel1a-content"
-                            id="panel1a-header"
-                            {...stagingProp({
-                                "data-selenium-target": `hint-expand-${i}-${index}`,
-                            })}
-                        >
-                            <Typography className={classes.heading}>
-                                {translate('hintsystem.hint') + (i + 1) + ": "}
-                                {renderText(
-                                    hint.title === "nan" ? "" : hint.title,
-                                    problemID,
-                                    chooseVariables(
-                                        Object.assign(
-                                            {},
-                                            stepVars,
-                                            hint.variabilization
-                                        ),
-                                        seed
-                                    ),
-                                    this.context
-                                )}
-                            </Typography>
-                        </AccordionSummary>
-                        <AccordionDetails >
-                        <div style={{ width: "100%" }}>
-                            <Typography
-                                component={"span"}
-                                style={{ width: "100%" }}
+                            <AccordionSummary
+                                expandIcon={<ExpandMoreIcon />}
+                                aria-controls="panel1a-content"
+                                id="panel1a-header"
+                                {...stagingProp({
+                                    "data-selenium-target": `hint-expand-${i}-${index}`,
+                                })}
                             >
-                                {renderText(
-                                    hint.text,
-                                    problemID,
-                                    chooseVariables(
-                                        Object.assign(
-                                            {},
-                                            stepVars,
-                                            hint.variabilization
-                                        ),
-                                        seed
-                                    ),
-                                    this.context
-                                )}
-                                {hint.type === "scaffold" ? (
-                                    <div>
-                                        <Spacer />
-                                        <HintTextbox
-                                            hintNum={i}
-                                            hint={hint}
-                                            index={index}
-                                            submitHint={this.props.submitHint}
-                                            seed={this.props.seed}
-                                            hintVars={Object.assign(
+                                <Typography className={classes.heading}>
+                                    {translate('hintsystem.hint') + (i + 1) + ": "}
+                                    {renderText(
+                                        hint.title === "nan" ? "" : hint.title,
+                                        problemID,
+                                        chooseVariables(
+                                            Object.assign(
                                                 {},
-                                                this.props.stepVars,
+                                                stepVars,
                                                 hint.variabilization
+                                            ),
+                                            seed
+                                        ),
+                                        this.context
+                                    )}
+                                </Typography>
+                            </AccordionSummary>
+                            <AccordionDetails >
+                            <div style={{ width: "100%" }}>
+                                <Typography
+                                    component={"span"}
+                                    style={{ width: "100%" }}
+                                >
+                                    {hint.title !== "Answer" ? (
+                                        <Latex>
+                                        {renderText(
+                                            hint.text,
+                                            problemID,
+                                            chooseVariables(
+                                                Object.assign(
+                                                    {},
+                                                    stepVars,
+                                                    hint.variabilization
+                                                ),
+                                                seed
+                                            ),
+                                            this.context
+                                        )}
+                                        </Latex>
+                                    ) : (
+                                        <div>
+                                            {renderText(
+                                                hint.text,
+                                                problemID,
+                                                chooseVariables(
+                                                    Object.assign(
+                                                        {},
+                                                        stepVars,
+                                                        hint.variabilization
+                                                    ),
+                                                    seed
+                                                ),
+                                                this.context
                                             )}
-                                            toggleHints={(event) =>
-                                                this.toggleSubHints(event, i)
-                                            }
-                                            giveStuFeedback={
-                                                this.giveStuFeedback
-                                            }
-                                        />
-                                    </div>
-                                ) : (
-                                    ""
-                                )}
-                                {(showSubHints[i] ||
-                                    (use_expanded_view && debug)) &&
-                                hint.subHints !== undefined ? (
-                                    <div className="SubHints">
-                                        <Spacer />
-                                        <ErrorBoundary
-                                            componentName={"SubHintSystem"}
-                                        >
-                                            <SubHintSystem
-                                                giveStuFeedback={
-                                                    this.giveStuFeedback
-                                                }
-                                                unlockFirstHint={
-                                                    this.unlockFirstHint
-                                                }
-                                                problemID={problemID}
-                                                hints={hint.subHints}
-                                                unlockHint={this.unlockSubHint}
-                                                hintStatus={
-                                                    this.state.subHintsFinished[
-                                                        i
-                                                    ]
-                                                }
-                                                submitHint={this.submitSubHint}
-                                                parent={i}
+                                        </div>
+                                   )}
+                                    {hint.type === "scaffold" ? (
+                                        <div>
+                                            <Spacer />
+                                            <HintTextbox
+                                                hintNum={i}
+                                                hint={hint}
                                                 index={index}
+                                                submitHint={this.props.submitHint}
                                                 seed={this.props.seed}
                                                 hintVars={Object.assign(
                                                     {},
                                                     this.props.stepVars,
                                                     hint.variabilization
                                                 )}
+                                                toggleHints={(event) =>
+                                                    this.toggleSubHints(event, i)
+                                                }
+                                                giveStuFeedback={
+                                                    this.giveStuFeedback
+                                                }
                                             />
-                                        </ErrorBoundary>
-                                        <Spacer />
-                                    </div>
-                                ) : (
-                                    ""
-                                )}
-                            </Typography>
-                             {/* Check if the hint is dynamic (AI-generated) */}
-                             {hint.type === "gptHint" 
-                                && !this.props.isGeneratingHint
-                                && (
-                                <div
-                                    style={{
-                                        display: "flex",
-                                        justifyContent: "flex-end",
-                                    }}
-                                >
-                                    <ReloadIcon
+                                        </div>
+                                    ) : (
+                                        ""
+                                    )}
+                                    {(showSubHints[i] ||
+                                        (use_expanded_view && debug)) &&
+                                    hint.subHints !== undefined ? (
+                                        <div className="SubHints">
+                                            <Spacer />
+                                            <ErrorBoundary
+                                                componentName={"SubHintSystem"}
+                                            >
+                                                <SubHintSystem
+                                                    giveStuFeedback={
+                                                        this.giveStuFeedback
+                                                    }
+                                                    unlockFirstHint={
+                                                        this.unlockFirstHint
+                                                    }
+                                                    problemID={problemID}
+                                                    hints={hint.subHints}
+                                                    unlockHint={this.unlockSubHint}
+                                                    hintStatus={
+                                                        this.state.subHintsFinished[
+                                                            i
+                                                        ]
+                                                    }
+                                                    submitHint={this.submitSubHint}
+                                                    parent={i}
+                                                    index={index}
+                                                    seed={this.props.seed}
+                                                    hintVars={Object.assign(
+                                                        {},
+                                                        this.props.stepVars,
+                                                        hint.variabilization
+                                                    )}
+                                                />
+                                            </ErrorBoundary>
+                                            <Spacer />
+                                        </div>
+                                    ) : (
+                                        ""
+                                    )}
+                                </Typography>
+                                {/* Check if the hint is dynamic (AI-generated) */}
+                                {hint.type === "gptHint" 
+                                    && !this.props.isGeneratingHint
+                                    && (
+                                    <div
                                         style={{
-                                            cursor: "pointer",
-                                            fontSize: "24px",
+                                            display: "flex",
+                                            justifyContent: "flex-end",
                                         }}
-                                        onClick={() => this.generateHintFromGPT(true)}
-                                        title="Regenerate Hint"
-                                    />
+                                    >
+                                        <ReloadIcon
+                                            style={{
+                                                cursor: "pointer",
+                                                fontSize: "24px",
+                                            }}
+                                            onClick={() => this.generateHintFromGPT(true)}
+                                            title="Regenerate Hint"
+                                        />
+                                    </div>
+                                )}
                                 </div>
-                            )}
-                            </div>
-                        </AccordionDetails>
+                            </AccordionDetails>
+
+                        
                     </Accordion>
                 ))}
             </div>
